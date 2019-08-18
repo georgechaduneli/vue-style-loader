@@ -21,6 +21,14 @@ module.exports.pitch = function (remainingRequest) {
   var relPath = path.relative(__dirname, this.resourcePath).replace(/\\/g, '/')
   var id = JSON.stringify(hash(request + relPath))
   var options = loaderUtils.getOptions(this) || {}
+  var queryAttributes = qs.parse(this.resourceQuery)
+  var dataAttributes = Object.keys(queryAttributes)
+                             .filter(i => i.startsWith('data-'))
+                             .reduce((attribute, key) => {
+                               attribute[key] = queryAttributes[key];
+                               return attribute;
+                             }, {})
+  options.attrs = {...options.attrs || {}, ...dataAttributes};
 
   // direct css import from js --> direct, or manually call `styles.__inject__(ssrContext)` with `manualInject` option
   // css import from vue file --> component lifecycle linked
