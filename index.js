@@ -56,7 +56,7 @@ module.exports.pitch = function (remainingRequest) {
       '// add CSS to Shadow Root',
       'var add = require(' + addStylesShadowPath + ').default',
       'module.exports.__inject__ = function (shadowRoot) {',
-      '  add(' + id + ', content, shadowRoot)',
+      '  add(' + id + ', content, shadowRoot, ' + JSON.stringify(options) + ')',
       '};'
     ]).join('\n')
   } else if (!isServer) {
